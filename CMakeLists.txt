@@ -1,14 +1,18 @@
 cmake_minimum_required(VERSION 3.15)
 
 project(EZ_META
-VERSION 1.0.0
+VERSION 1.0.1
 LANGUAGES C CXX)
 
-option(BUILD_TESTS "Build the library tests" ON)
-option(SEPARATE_DIRECTORY "Install the package into its own directory" ON)
-
 include(GNUInstallDirs)
-find_package(ez-cmake CONFIG REQUIRED)
+include("cmake/ez-cmake/install-package.cmake")
+
+option(BUILD_TESTS "Build the test executables" ON)
+option(SEPARATE_DIRECTORY "Install the package into its own directory" ON)
+set(CONFIG_DIR "${CMAKE_INSTALL_DATAROOTDIR}/ez-meta" CACHE STRING "The relative directory to install package config files.")
+
+
+
 
 # Find deps
 find_package(glm CONFIG REQUIRED)
@@ -27,16 +31,17 @@ target_include_directories(meta INTERFACE
 target_compile_features(meta INTERFACE cxx_std_17)
 add_library(ez::meta ALIAS meta)
 
-# Build the tests once the option is enabled.
-if(${BUILD_TESTS})
-	add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/tests")
+
+
+if(BUILD_TESTS)
+	add_subdirectory("tests")
 endif()
 
-
-# Set the proper installation path
 if(SEPARATE_DIRECTORY)
 	set(CMAKE_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX}/ez-meta)
 endif()
+
+
 
 install(
 	DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/"
@@ -59,9 +64,9 @@ install_package(
 	EXPORT "ez-meta-targets"
 	VERSION "${CMAKE_PROJECT_VERSION}"
 	COMPATIBILITY "SameMajorVersion"
-	DESTINATION DEFAULT
+	DESTINATION "${CONFIG_DIR}"
 
-	PRECONFIG "${CMAKE_CURRENT_SOURCE_DIR}/preconfig.cmake"
+	PRECONFIG "cmake/preconfig.cmake"
 
 	# Only add this option if the library is header only, or an interface library.
 	ARCH_INDEPENDENT

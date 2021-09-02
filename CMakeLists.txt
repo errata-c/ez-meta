@@ -1,10 +1,15 @@
 cmake_minimum_required(VERSION 3.15)
 
 project(EZ_META
-VERSION 1.0.1
-LANGUAGES C CXX
-DESCRIPTION "C++ metaprogramming utilites, primarily for determining iterator categories and linear algebra types"
+	VERSION 1.0.1
+	LANGUAGES C CXX
+	DESCRIPTION "C++ metaprogramming utilites, primarily for determining iterator categories and linear algebra types"
 )
+
+option(BUILD_TESTS "Build the test executables" ON)
+option(SEPARATE_DIRECTORY "Install the package into its own directory" ON)
+set(CONFIG_DIR "${CMAKE_INSTALL_DATAROOTDIR}/ez-meta" CACHE STRING "The relative directory to install package config files.")
+
 
 include(GNUInstallDirs)
 include(FetchContent)
@@ -12,13 +17,10 @@ include(FetchContent)
 FetchContent_Declare(
 	ez-cmake
 	GIT_REPOSITORY "https://github.com/errata-c/ez-cmake.git"
-	GIT_TAG "a59477ebb9d8ce1f686b99118586310f47cb7a80"
+	GIT_TAG "main"
 )
 FetchContent_MakeAvailable(ez-cmake)
 
-option(BUILD_TESTS "Build the test executables" ON)
-option(SEPARATE_DIRECTORY "Install the package into its own directory" ON)
-set(CONFIG_DIR "${CMAKE_INSTALL_DATAROOTDIR}/ez-meta" CACHE STRING "The relative directory to install package config files.")
 
 # Find deps
 find_package(glm CONFIG REQUIRED)

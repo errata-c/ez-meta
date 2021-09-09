@@ -36,11 +36,9 @@ target_include_directories(meta INTERFACE
 target_compile_features(meta INTERFACE cxx_std_17)
 add_library(ez::meta ALIAS meta)
 
-
 if(EZ_META_BUILD_TESTS)
 	add_subdirectory("tests")
 endif()
-
 
 install(
 	DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/"

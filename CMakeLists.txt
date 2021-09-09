@@ -6,9 +6,9 @@ project(EZ_META
 	DESCRIPTION "C++ metaprogramming utilites, primarily for determining iterator categories and linear algebra types"
 )
 
-option(BUILD_TESTS "Build the test executables" ON)
-option(SEPARATE_DIRECTORY "Install the package into its own directory" ON)
-set(CONFIG_DIR "${CMAKE_INSTALL_DATAROOTDIR}/ez-meta" CACHE STRING "The relative directory to install package config files.")
+option(EZ_META_BUILD_TESTS "Build the test executables" OFF)
+option(EZ_META_SEPARATE_DIRECTORY "Install the package into its own directory" OFF)
+set(EZ_META_CONFIG_DIR "${CMAKE_INSTALL_DATAROOTDIR}/ez-meta" CACHE STRING "The relative directory to install package config files.")
 
 
 include(GNUInstallDirs)
@@ -41,15 +41,13 @@ add_library(ez::meta ALIAS meta)
 
 
 
-if(BUILD_TESTS)
+if(EZ_META_BUILD_TESTS)
 	add_subdirectory("tests")
 endif()
 
-if(SEPARATE_DIRECTORY)
+if(EZ_META_SEPARATE_DIRECTORY)
 	set(CMAKE_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX}/ez-meta)
 endif()
-
-
 
 install(
 	DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/"
@@ -72,7 +70,7 @@ install_package(
 	EXPORT "ez-meta-targets"
 	VERSION "${CMAKE_PROJECT_VERSION}"
 	COMPATIBILITY "SameMajorVersion"
-	DESTINATION "${CONFIG_DIR}"
+	DESTINATION "${EZ_META_CONFIG_DIR}"
 
 	PRECONFIG "cmake/preconfig.cmake"
 

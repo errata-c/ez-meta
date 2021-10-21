@@ -41,6 +41,13 @@ static_assert(ez::is_vec_v<float>, "ez::is_vec_v is incorrect");
 static_assert(ez::is_vec_v<double>, "ez::is_vec_v is incorrect");
 static_assert(ez::is_vec_v<int>, "ez::is_vec_v is incorrect");
 
+static_assert(ez::is_real_vec_v<float>, "ez::is_real_vec_v is incorrect");
+static_assert(ez::is_real_vec_v<double>, "ez::is_real_vec_v is incorrect");
+static_assert(ez::is_real_vec_v<glm::vec2>, "ez::is_real_vec_v is incorrect");
+static_assert(ez::is_real_vec_v<glm::vec3>, "ez::is_real_vec_v is incorrect");
+static_assert(ez::is_real_vec_v<glm::vec4>, "ez::is_real_vec_v is incorrect");
+static_assert(!ez::is_real_vec_v<int>, "ez::is_real_vec_v is incorrect");
+
 static_assert(!ez::is_vec_strict_v<float>, "ez::is_vec_strict_v is incorrect");
 static_assert(!ez::is_vec_strict_v<double>, "ez::is_vec_strict_v is incorrect");
 static_assert(!ez::is_vec_strict_v<int>, "ez::is_vec_strict_v is incorrect");
@@ -51,6 +58,16 @@ static_assert(ez::is_vec_v<glm::vec3>, "ez::is_vec_v is incorrect");
 static_assert(ez::is_vec_v<glm::vec4>, "ez::is_vec_v is incorrect");
 
 static_assert(!ez::is_mat_v<glm::vec2>, "ez::is_mat_v is incorrect");
+static_assert(ez::is_mat_v<glm::mat2>, "ez::is_mat_v is incorrect");
+static_assert(ez::is_mat_v<glm::mat3>, "ez::is_mat_v is incorrect");
+static_assert(ez::is_mat_v<glm::mat4>, "ez::is_mat_v is incorrect");
+static_assert(ez::is_mat_v<glm::mat2x3>, "ez::is_mat_v is incorrect");
+static_assert(ez::is_mat_v<glm::mat2x4>, "ez::is_mat_v is incorrect");
+static_assert(ez::is_mat_v<glm::mat3x4>, "ez::is_mat_v is incorrect");
+
+static_assert(!ez::is_mat_strict_v<glm::vec2>, "ez::is_mat_strict_v is incorrect");
+static_assert(ez::is_mat_strict_v<glm::mat2>, "ez::is_mat_strict_v is incorrect");
+static_assert(!ez::is_mat_strict_v<float>, "ez::is_mat_strict_v is incorrect");
 
 static_assert(std::is_same_v<float, ez::vec_value_t<glm::vec1>>, "ez::vec_value_t is incorrect");
 static_assert(std::is_same_v<float, ez::vec_value_t<glm::vec2>>, "ez::vec_value_t is incorrect");

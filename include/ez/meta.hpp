@@ -13,6 +13,13 @@ namespace ez {
 	template<typename T>
 	inline constexpr bool is_vec_v = is_vec<T>::value;
 
+	template<typename T, std::size_t N = 1>
+	struct is_vec_strict : std::false_type {};
+	template<typename T, std::size_t N>
+	struct is_vec_strict<glm::vec<N, T>> : std::is_arithmetic<T> {};
+	template<typename T>
+	inline constexpr bool is_vec_strict_v = is_vec_strict<T>::value;
+
 
 	template<typename T, typename = int>
 	struct is_real_vec : std::is_floating_point<T> {};
@@ -29,23 +36,9 @@ namespace ez {
 
 	template<typename T>
 	struct vec_traits {
-		using value_type = T;
-		static constexpr std::size_t length = 1;
-	};
-	template<typename T>
-	struct vec_traits<typename glm::vec<2, T>> {
-		using value_type = T;
-		static constexpr std::size_t length = 2;
-	};
-	template<typename T>
-	struct vec_traits<typename glm::vec<3, T>> {
-		using value_type = T;
-		static constexpr std::size_t length = 3;
-	};
-	template<typename T>
-	struct vec_traits<typename glm::vec<4, T>> {
-		using value_type = T;
-		static constexpr std::size_t length = 4;
+		static_assert(is_vec_v<T>, "typename passed into vec_traits must be a glm vector type!");
+		using value_type = typename T::value_type;
+		static constexpr std::size_t length = T::length();
 	};
 
 	template<typename T>
@@ -53,7 +46,6 @@ namespace ez {
 
 	template<typename T>
 	inline constexpr std::size_t vec_length_v = vec_traits<T>::length;
-
 
 	template<typename T, typename = int>
 	struct is_mat : std::is_arithmetic<T> {};

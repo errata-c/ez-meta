@@ -30,9 +30,15 @@ namespace ez {
 
 	template<typename T>
 	struct vec_traits {
-		static_assert(is_vec_v<T>, "typename passed into vec_traits must be a glm vector type!");
-		using value_type = typename T::value_type;
-		static constexpr std::size_t length = T::length();
+		static_assert(is_vec_v<T>, "typename passed into vec_traits must be a vector type!");
+		using value_type = T;
+		static constexpr std::size_t length = 1;
+	};
+	template<typename T, glm::length_t N>
+	struct vec_traits<glm::vec<N, T>> {
+		static_assert(is_vec_v<T>, "typename passed into vec_traits must be a vector type!");
+		using value_type = T;
+		static constexpr std::size_t length = N;
 	};
 
 	template<typename T>

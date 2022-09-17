@@ -6,13 +6,8 @@ namespace ez {
 	// Check is the input type is a valid iterator.
 	template<typename T, typename = int>
 	struct is_iterator : std::false_type {};
-	// Any type that defines an iterator_category type is considered an iterator.
-	// This seems pretty reasonable to me.
 	template<typename T>
-	struct is_iterator < T, decltype(std::declval<typename T::iterator_category>(), 0) > : std::true_type {};
-	template<typename T>
-	//  Pointers are always valid iterators.
-	struct is_iterator < T*, int > : std::true_type {};
+	struct is_iterator < T, decltype(typename std::iterator_traits<T>::iterator_category{}, 0) > : std::true_type {};
 	template<typename T>
 	static constexpr bool is_iterator_v = is_iterator<T>::value;
 

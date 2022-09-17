@@ -60,4 +60,17 @@ namespace ez {
 	struct is_mat_strict<glm::mat<M, N, T>>: std::is_arithmetic<T> {};
 	template<typename T>
 	inline constexpr bool is_mat_strict_v = is_mat_strict<T>::value;
+
+	template<typename T>
+	auto value_ptr(T & obj) {
+		if constexpr (is_vec_strict_v<T>) {
+			return &obj[0];
+		}
+		else if constexpr (is_mat_strict_v<T>) {
+			return &obj[0][0];
+		}
+		else {
+			return &obj;
+		}
+	}
 }

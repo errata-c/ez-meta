@@ -9,8 +9,10 @@
 #include <glm/mat3x3.hpp>
 #include <glm/mat4x4.hpp>
 
+#include <array>
 #include <vector>
 #include <iterator>
+#include <cassert>
 
 #include <fmt/core.h>
 
@@ -79,9 +81,50 @@ static_assert(ez::is_iterator_v<glm::vec2* const> == false, "ez::is_iterator_v i
 static_assert(ez::is_iterator_v<const glm::vec2*> == true, "ez::is_iterator_v is incorrect");
 static_assert(ez::is_output_iterator_v<const glm::vec2*> == false, "ez::is_output_iterator_v is incorrect");
 
+void print(int a) {
+	fmt::print("Expanded to 1!\n");
+	fmt::print("{}\n", a);
+}
+void print(int a, int b) {
+	fmt::print("Expanded to 2!\n");
+	fmt::print("{}, {}\n", a, b);
+}
+void print(int a, int b, int c) {
+	fmt::print("Expanded to 3!\n");
+	fmt::print("{}, {}, {}\n", a, b, c);
+}
+
+// We can expand an interator into a set of arguments at compile time, but only if we wrap the call to the function
+template<typename Iter>
+struct CallExpanded {
+	Iter iter;
+
+	template<std::size_t N, typename... Args>
+	decltype(auto) call(Args... args) {
+		if constexpr (N == 0) {
+			return print(args...);
+		}
+		else {
+			return call<N-1>(args..., *iter++);
+		}
+	}
+};
 
 int main(int argc, char ** argv) {
 	fmt::print("Meta test is mostly compile time.\n");
+
+	std::array<int, 3> val{{ 0, 1, 2 }};
+	using Iter = std::array<int, 3>::iterator;
+
+	CallExpanded<Iter>{val.begin()}.call<3>();
+
+	glm::vec2 p0{};
+	glm::mat3 m0{};
+	float f0;
+	
+	assert(ez::value_ptr(p0) == &p0[0]);
+	assert(ez::value_ptr(m0) == &m0[0][0]);
+	assert(ez::value_ptr(f0) == &f0);
 
 	return 0;
 }

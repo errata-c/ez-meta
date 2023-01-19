@@ -1,9 +1,13 @@
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.24)
+project(EZ_META_TESTS)
 
-project(EZ_META_TESTS 
-VERSION 1.0.0
-LANGUAGES C CXX)
+FetchContent_Declare(
+	fmt
+	GIT_REPOSITORY "https://github.com/fmtlib/fmt.git"
+	GIT_TAG "9.1.0"
+	FIND_PACKAGE_ARGS CONFIG
+)
+FetchContent_MakeAvailable(fmt)
 
-find_package(fmt CONFIG REQUIRED)
 
 add_subdirectory("basic")

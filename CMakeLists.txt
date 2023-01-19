@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.21)
+cmake_minimum_required(VERSION 3.24)
 
 project(EZ_META
 	VERSION 1.1.0
@@ -15,11 +15,14 @@ FetchContent_Declare(
 	GIT_REPOSITORY "https://github.com/errata-c/ez-cmake.git"
 	GIT_TAG "main"
 )
-FetchContent_MakeAvailable(ez-cmake)
+FetchContent_Declare(
+	glm
+	GIT_REPOSITORY "https://github.com/g-truc/glm.git"
+	GIT_TAG "0.9.9.8"
+	FIND_PACKAGE_ARGS CONFIG
+)
+FetchContent_MakeAvailable(ez-cmake glm)
 
-
-# Find deps
-find_package(glm CONFIG REQUIRED)
 
 # Create main target.
 add_library(meta INTERFACE)
